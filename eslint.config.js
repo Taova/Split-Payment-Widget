@@ -4,8 +4,6 @@ import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
 import tseslint from "typescript-eslint";
 
-import prettier from "eslint-config-prettier";
-
 export default tseslint.config(
   { ignores: ["dist", "node_modules"] },
   {
@@ -26,18 +24,15 @@ export default tseslint.config(
         { allowConstantExport: true },
       ],
       semi: ["error", "always"],
-      quotes: ["error", "single"],
+      quotes: ["error", "double", { avoidEscape: true }],
+      indent: ["error", 2],
+      "no-tabs": ["error"],
+
       "no-unused-vars": "warn",
       "no-extra-semi": "error",
       "comma-dangle": ["error", "always-multiline"],
-      indent: ["error", 2],
       "object-curly-spacing": ["error", "always"],
       "arrow-spacing": ["error", { before: true, after: true }],
-      quotes: ["error", "double", { avoidEscape: true }],
-      "no-tabs": ["error"],
-      indent: ["error", 2],
-      "max-len": ["warn", { code: 80, ignoreUrls: true }],
     },
-    prettier,
-  },
+  }
 );
