@@ -1,45 +1,34 @@
-import { useEffect, useState } from "react";
-import type { CreditInfo } from "../../types";
-import CustomSelect from "../CustomSelect";
-import InfoModal from "../InfoModal";
-import useFetchCredentialInfo from "../../hooks/useFetchCredentialInfo";
-
+import { useState } from "react";
 import { logEvent } from "../../api";
+import useCreditAgreements from "../../hooks/useCreditAgreements";
+import CustomSelect from "../CustomSelect";
+import WidgetHeader from "../WidgetHeader";
+import InfoModal from "../InfoModal";
 
 interface Props {
   price: number;
 }
 
 const Widget: React.FC<Props> = ({ price }) => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-  const { plans, selectedPlan, error, setSelectedPlan } =
-    useFetchCredentialInfo(price);
+  const [isModalOpen, setIsOpen] = useState<boolean>(false);
+  const { agreements, selectedAgreement, error, setSelectedAgreement } =
+    useCreditAgreements(price);
 
-  if (error || !plans || !selectedPlan) {
-    console.log(error, "error");
+  if (error || !agreements || !selectedAgreement) {
     return null;
   }
 
   return (
     <div className="border rounded-md px-4 py-3 shadow-sm bg-white">
-      <div className="flex justify-between text-sm font-medium text-gray-700 mb-2">
-        <span>Págalo en</span>
-        <button
-          type="button"
-          onClick={() => setIsOpen(true)}
-          className="text-blue-600 hover:underline focus:outline-none cursor-pointer bg-transparent border-0 p-0"
-        >
-          Más info
-        </button>
-      </div>
+      <WidgetHeader onClick={() => setIsOpen(true)} />
       <CustomSelect
-        plans={plans}
-        selectedPlan={selectedPlan}
-        setSelectedPlan={setSelectedPlan}
+        agreements={agreements}
+        selectedAgreement={selectedAgreement}
+        setSelectedAgreement={setSelectedAgreement}
       />
       <InfoModal
-        fee={selectedPlan.instalment_fee.string}
-        isOpen={isOpen}
+        fee={selectedAgreement.instalment_fee.string}
+        isModalOpen={isModalOpen}
         onCloseModal={() => setIsOpen(false)}
       />
     </div>

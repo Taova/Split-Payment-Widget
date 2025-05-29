@@ -10,13 +10,17 @@ import DialogContent from "../DialogContent";
 
 interface InfoModalProps {
   fee: string;
-  isOpen: boolean;
-  onCloseModal: any;
+  isModalOpen: boolean;
+  onCloseModal: () => void;
 }
 
-const InfoModal: React.FC<InfoModalProps> = ({ fee, isOpen, onCloseModal }) => {
+const InfoModal: React.FC<InfoModalProps> = ({
+  fee,
+  isModalOpen,
+  onCloseModal,
+}) => {
   return (
-    <Transition appear show={isOpen} as={Fragment}>
+    <Transition appear show={isModalOpen} as={Fragment}>
       <Dialog className="relative z-50" onClose={onCloseModal}>
         <TransitionChild
           as={Fragment}

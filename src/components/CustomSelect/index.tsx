@@ -6,29 +6,24 @@ import {
   ListboxOptions,
 } from "@headlessui/react";
 import { ChevronUpIcon, ChevronDownIcon } from "@heroicons/react/20/solid";
+import { getOptionValue } from "../../utils";
 import type { CreditInfo } from "../../types";
 
-// TODO: fix types
 interface CustomSelect {
-  plans: CreditInfo[];
-  selectedPlan: CreditInfo;
-  setSelectedPlan: any;
+  agreements: CreditInfo[];
+  selectedAgreement: CreditInfo;
+  setSelectedAgreement: () => void;
 }
 
-const getOptionValue = (count: number, amount: string): string => {
-  return `${count} cuotas de ${amount}/mes`;
-};
-
 const CustomSelect: React.FC<CustomSelect> = ({
-  plans,
-  selectedPlan,
-  setSelectedPlan,
+  agreements,
+  selectedAgreement,
+  setSelectedAgreement,
 }) => {
   const [open, setOpen] = useState(false);
-  console.log(selectedPlan, "selectedPlan");
 
   return (
-    <Listbox value={selectedPlan} onChange={setSelectedPlan}>
+    <Listbox value={selectedAgreement} onChange={setSelectedAgreement}>
       <div className="relative">
         <ListboxButton
           className={`no-radius-transition w-full border border-gray-300 bg-white py-2 pl-3 pr-10 text-left text-sm text-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500
@@ -36,8 +31,8 @@ const CustomSelect: React.FC<CustomSelect> = ({
           onClick={() => setOpen((prev) => !prev)}
         >
           {getOptionValue(
-            selectedPlan.instalment_count,
-            selectedPlan.instalment_total.string,
+            selectedAgreement.instalment_count,
+            selectedAgreement.instalment_total.string,
           )}
           <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
             {open ? (
@@ -49,9 +44,10 @@ const CustomSelect: React.FC<CustomSelect> = ({
         </ListboxButton>
 
         <ListboxOptions className="absolute z-10 max-h-60 w-full overflow-auto rounded-bl-md rounded-br-md border border-t-0 border-gray-200 bg-white text-sm shadow-lg focus:outline-none">
-          {plans
+          {agreements
             .filter(
-              (plan) => plan.instalment_count !== selectedPlan.instalment_count,
+              (plan) =>
+                plan.instalment_count !== selectedAgreement.instalment_count,
             )
             .map((plan) => (
               <ListboxOption
