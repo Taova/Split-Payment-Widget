@@ -1,6 +1,5 @@
 import { SEQURA_EVENTS_URL, CREDIT_AGREEMENT_URL } from "../constants";
-import type { HttpMethod, FetchResult, EventProps} from '../types';
-
+import type { HttpMethod, FetchResult, EventProps } from "../types";
 
 const fetchData = async <T = any>(
   method: HttpMethod,
@@ -30,12 +29,15 @@ const fetchData = async <T = any>(
 
 export const fetchCreditAgreement = async (
   amount: number,
-  url: string = SEQURA_EVENTS_URL,
+  url: string = CREDIT_AGREEMENT_URL,
 ) => {
   // handle errors?
-  return await fetchData("GET", `${url}?amount=${amount}`);
+  return await fetchData("GET", `${url}?totalWithTax=${amount}`);
 };
 
 export const logEvent = async (payload: EventProps) => {
-  return await fetchData("POST", CREDIT_AGREEMENT_URL, payload);
+  try {
+    const res = await fetchData("POST", SEQURA_EVENTS_URL, payload);
+    return res;
+  } catch {}
 };

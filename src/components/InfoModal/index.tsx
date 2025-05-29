@@ -1,21 +1,23 @@
+import { Fragment } from "react";
 import {
   Dialog,
   DialogPanel,
-  DialogTitle,
   Transition,
   TransitionChild,
 } from "@headlessui/react";
-import { Fragment } from "react";
+import DialogHeader from "../DialogHeader";
+import DialogContent from "../DialogContent";
 
 interface InfoModalProps {
+  fee: string;
   isOpen: boolean;
   onCloseModal: any;
 }
 
-const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onCloseModal }) => {
+const InfoModal: React.FC<InfoModalProps> = ({ fee, isOpen, onCloseModal }) => {
   return (
     <Transition appear show={isOpen} as={Fragment}>
-      <Dialog as="div" className="relative z-10" onClose={onCloseModal}>
+      <Dialog className="relative z-50" onClose={onCloseModal}>
         <TransitionChild
           as={Fragment}
           enter="ease-out duration-300"
@@ -25,7 +27,7 @@ const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onCloseModal }) => {
           leaveFrom="opacity-100"
           leaveTo="opacity-0"
         >
-          <div className="fixed inset-0 bg-black bg-opacity-25" />
+          <div className="fixed inset-0 bg-black" />
         </TransitionChild>
 
         <div className="fixed inset-0 overflow-y-auto">
@@ -40,28 +42,8 @@ const InfoModal: React.FC<InfoModalProps> = ({ isOpen, onCloseModal }) => {
               leaveTo="opacity-0 scale-95"
             >
               <DialogPanel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                <DialogTitle
-                  as="h3"
-                  className="text-lg font-medium leading-6 text-gray-900"
-                >
-                  Payment successful
-                </DialogTitle>
-                <div className="mt-2">
-                  <p className="text-sm text-gray-500">
-                    Your payment has been successfully submitted. We’ve sent you
-                    an email with all of the details of your order.
-                  </p>
-                </div>
-
-                <div className="mt-4">
-                  <button
-                    type="button"
-                    className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200"
-                    onClick={onCloseModal}
-                  >
-                    Got it, thanks!
-                  </button>
-                </div>
+                <DialogHeader />
+                <DialogContent fee={fee} />
               </DialogPanel>
             </TransitionChild>
           </div>

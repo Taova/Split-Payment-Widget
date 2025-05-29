@@ -1,1 +1,7 @@
 @import "tailwindcss";
+
+/* remove transition only for border-radius */
+.no-radius-transition {
+  transition-property: background-color, color, box-shadow !important;
+}
+
