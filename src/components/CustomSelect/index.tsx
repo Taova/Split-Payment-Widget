@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, memo } from "react";
 import {
   Listbox,
   ListboxButton,
@@ -9,21 +9,21 @@ import { ChevronUpIcon, ChevronDownIcon } from "@heroicons/react/20/solid";
 import { getOptionValue } from "../../utils";
 import type { CreditInfo } from "../../types";
 
-interface CustomSelect {
+interface Props {
   agreements: CreditInfo[];
   selectedAgreement: CreditInfo;
-  setSelectedAgreement: () => void;
+  onSelectAgreement: (value: CreditInfo) => void;
 }
 
-const CustomSelect: React.FC<CustomSelect> = ({
+const CustomSelect: React.FC<Props> = ({
   agreements,
   selectedAgreement,
-  setSelectedAgreement,
+  onSelectAgreement,
 }) => {
   const [open, setOpen] = useState(false);
 
   return (
-    <Listbox value={selectedAgreement} onChange={setSelectedAgreement}>
+    <Listbox value={selectedAgreement} onChange={onSelectAgreement}>
       <div className="relative">
         <ListboxButton
           className={`no-radius-transition w-full border border-gray-300 bg-white py-2 pl-3 pr-10 text-left text-sm text-gray-700 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500
@@ -72,4 +72,4 @@ const CustomSelect: React.FC<CustomSelect> = ({
   );
 };
 
-export default CustomSelect;
+export default memo(CustomSelect);

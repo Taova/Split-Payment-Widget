@@ -1,16 +1,12 @@
-import Widget from "./components/Widget";
+import WidgetContainer from "./containers/WidgetContainer";
 import "./App.css";
 
 function App() {
   return (
     <>
-      <Widget
-        price={39999}
-      />
-      
+      <WidgetContainer price={39999} />
     </>
   );
 }
 
 export default App;
-

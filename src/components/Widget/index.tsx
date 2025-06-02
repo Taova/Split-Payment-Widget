@@ -1,37 +1,49 @@
-import { useState } from "react";
-import { logEvent } from "../../api";
-import useCreditAgreements from "../../hooks/useCreditAgreements";
+import { useEffect } from "react";
+import { sendAnalyticsEvent } from "../../api";
+import { EVENT_CONTEXT, EVENT_TYPE } from "../../constants";
 import CustomSelect from "../CustomSelect";
 import WidgetHeader from "../WidgetHeader";
 import InfoModal from "../InfoModal";
+import type { CreditInfo } from "../../types";
 
 interface Props {
-  price: number;
+  agreements: CreditInfo[];
+  selectedAgreement: CreditInfo;
+  isModalOpen: boolean;
+  onSelectAgreement: (value: CreditInfo) => void;
+  onButtonClick: () => void;
+  onCloseModal: () => void;
 }
 
-const Widget: React.FC<Props> = ({ price }) => {
-  const [isModalOpen, setIsOpen] = useState<boolean>(false);
-  const { agreements, selectedAgreement, error, setSelectedAgreement } =
-    useCreditAgreements(price);
-
-  if (error || !agreements || !selectedAgreement) {
-    return null;
-  }
+const Widget: React.FC<Props> = ({
+  agreements,
+  selectedAgreement,
+  isModalOpen,
+  onSelectAgreement,
+  onButtonClick,
+  onCloseModal,
+}) => {
+  useEffect(() => {
+    sendAnalyticsEvent({
+      context: EVENT_CONTEXT.INSTALLMENT_WIDGET,
+      type: EVENT_TYPE.RENDER,
+    });
+  }, []);
 
   return (
-    <div className="border rounded-md px-4 py-3 shadow-sm bg-white">
-      <WidgetHeader onClick={() => setIsOpen(true)} />
+    <>
+      <WidgetHeader onClick={onButtonClick} />
       <CustomSelect
         agreements={agreements}
         selectedAgreement={selectedAgreement}
-        setSelectedAgreement={setSelectedAgreement}
+        onSelectAgreement={onSelectAgreement}
       />
       <InfoModal
         fee={selectedAgreement.instalment_fee.string}
         isModalOpen={isModalOpen}
-        onCloseModal={() => setIsOpen(false)}
+        onCloseModal={onCloseModal}
       />
-    </div>
+    </>
   );
 };
 

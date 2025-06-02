@@ -1,4 +1,4 @@
-import { getOptionValue } from "../index";
+import { getOptionValue } from "../../src/utils/index";
 
 describe("getOptionValue", () => {
   it("returns correct string for 1 instalment", () => {

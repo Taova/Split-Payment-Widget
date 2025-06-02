@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { fetchCreditAgreement, logEvent } from "../api";
-import type { CreditInfo, EventProps } from "../types";
+import { fetchCreditAgreement, sendAnalyticsEvent } from "../api";
+import { EVENT_CONTEXT, EVENT_TYPE } from "../constants";
+import type { CreditInfo, AnalyticsEvent } from "../types";
 
 const useCreditAgreements = (price: number) => {
   const [selectedAgreement, setSelectedAgreement] = useState<CreditInfo | null>(
@@ -26,13 +27,19 @@ const useCreditAgreements = (price: number) => {
         const message = e instanceof Error ? e.message : String(e);
         setError(message);
 
-        const event: EventProps = {
-          context: "splitPayWidget",
-          type: "fetchingError",
-          company: "companyID",
+        const event: AnalyticsEvent = {
+          context: EVENT_CONTEXT.INSTALLMENT_WIDGET,
+          type: EVENT_TYPE.LOAD_ERROR,
+          errorType: "credit_agreements_fetch",
+          totalWithTax: price,
+          // TODO: Add the following props in the next iteration
+          // to identify sources
+
+          // companyId: string,
+          // userId: string,
         };
 
-        logEvent(event);
+        sendAnalyticsEvent(event);
       }
     }
 
