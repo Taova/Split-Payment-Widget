@@ -1,9 +1,9 @@
 import { useState, useMemo } from "react";
 import { sendAnalyticsEvent } from "../../api";
-import { EVENT_CONTEXT, EVENT_TYPE } from "../../constants";
+import { EVENT_CONTEXT, EVENT_TYPE, MIN_PRICE_CENTS } from "../../constants";
 import useCreditAgreements from "../../hooks/useCreditAgreements";
 import Widget from "../../components/Widget";
-import type { CreditInfo } from "../../types";
+import type { CreditInfo, AnalyticsEvent } from "../../types";
 
 interface Props {
   price: number;
@@ -70,10 +70,30 @@ const WidgetContainer: React.FC<Props> = ({ price }) => {
     });
   };
 
-  if (error || !agreements || selectedAgreement === null) {
-    return null;
+  if (error) {
+    const event: AnalyticsEvent = {
+      context: EVENT_CONTEXT.INSTALLMENT_WIDGET,
+      type: EVENT_TYPE.LOAD_ERROR,
+      errorType: "credit_agreements_fetch",
+      totalWithTax: price,
+      // TODO: Add the following props in the next iteration
+      // to identify sources
+
+      // companyId: string,
+      // userId: string,
+    };
+
+    sendAnalyticsEvent(event);
   }
 
+  if (
+    error ||
+    !agreements ||
+    selectedAgreement === null ||
+    price < MIN_PRICE_CENTS
+  ) {
+    return null;
+  }
   return (
     <div className="border rounded-md px-4 py-3 shadow-sm bg-white">
       <Widget

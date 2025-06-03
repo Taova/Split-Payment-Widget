@@ -8,12 +8,14 @@ const config: Config = {
   },
   setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
   extensionsToTreatAsEsm: [".ts", ".tsx"],
-  testMatch: [
-    "<rootDir>/tests/units/**/*.test.[jt]s?(x)",
-    "<rootDir>/tests/integration/**/*.test.[jt]s?(x)",
-  ],
+  testMatch: ["<rootDir>/src/**/*.test.[jt]s?(x)"],
   transform: {
     "^.+\\.tsx?$": ["ts-jest", { useESM: true }],
+  },
+  globals: {
+    "ts-jest": {
+      tsconfig: "./tsconfig.app.json",
+    },
   },
 };
 

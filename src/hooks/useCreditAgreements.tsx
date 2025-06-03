@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import { fetchCreditAgreement, sendAnalyticsEvent } from "../api";
-import { EVENT_CONTEXT, EVENT_TYPE } from "../constants";
-import type { CreditInfo, AnalyticsEvent } from "../types";
+import { fetchCreditAgreement } from "../api";
+import type { CreditInfo } from "../types";
 
 const useCreditAgreements = (price: number) => {
   const [selectedAgreement, setSelectedAgreement] = useState<CreditInfo | null>(
@@ -26,20 +25,6 @@ const useCreditAgreements = (price: number) => {
       } catch (e: unknown) {
         const message = e instanceof Error ? e.message : String(e);
         setError(message);
-
-        const event: AnalyticsEvent = {
-          context: EVENT_CONTEXT.INSTALLMENT_WIDGET,
-          type: EVENT_TYPE.LOAD_ERROR,
-          errorType: "credit_agreements_fetch",
-          totalWithTax: price,
-          // TODO: Add the following props in the next iteration
-          // to identify sources
-
-          // companyId: string,
-          // userId: string,
-        };
-
-        sendAnalyticsEvent(event);
       }
     }
 
