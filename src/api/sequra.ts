@@ -1,5 +1,5 @@
 import { SEQURA_EVENTS_URL, CREDIT_AGREEMENT_URL } from "../constants";
-import type { HttpMethod, EventProps, CreditInfo } from "../types";
+import type { HttpMethod, AnalyticsEvent, CreditInfo } from "../types";
 
 const fetchData = async <T>(
   method: HttpMethod,
@@ -7,12 +7,15 @@ const fetchData = async <T>(
   body?: unknown,
 ): Promise<T> => {
   try {
+    const headers: HeadersInit = {};
+
     const options: RequestInit = {
       method,
-      headers: { "Content-Type": "application/json" },
+      headers,
     };
 
     if (body !== undefined) {
+      headers["Content-Type"] = "application/json";
       options.body = JSON.stringify(body);
     }
 
@@ -22,9 +25,9 @@ const fetchData = async <T>(
       throw new Error(`HTTP error: ${response.status}`);
     }
 
-    const data: T = await response.json();
+    const text = await response.text();
 
-    return data;
+    return text ? JSON.parse(text) : ({} as T);
   } catch (e: unknown) {
     let errorMessage = "Something went wrong. Please try later.";
 
@@ -45,9 +48,12 @@ export const fetchCreditAgreement = async (
   return await fetchData<CreditInfo[]>("GET", `${url}?totalWithTax=${amount}`);
 };
 
-export const logEvent = async (payload: EventProps) => {
+export const sendAnalyticsEvent = async (event: AnalyticsEvent) => {
   try {
-    const res = await fetchData("POST", SEQURA_EVENTS_URL, payload);
+    const res = await fetchData("POST", SEQURA_EVENTS_URL, {
+      ...event,
+      timestamp: new Date().toISOString(),
+    });
     return res;
   } catch (e) {
     console.warn("Event logging failed", e);

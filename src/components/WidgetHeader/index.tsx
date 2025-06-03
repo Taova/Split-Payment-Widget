@@ -8,8 +8,8 @@ const WidgetHeader: React.FC<WidgetHeaderProps> = ({ onClick }) => (
 
     <button
       type="button"
-      onClick={onClick}
       className="text-blue-600 hover:underline focus:outline-none cursor-pointer bg-transparent border-0 p-0"
+      onClick={onClick}
     >
       Más info
     </button>

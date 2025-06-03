@@ -1,1 +1,1 @@
-export { fetchCreditAgreement, logEvent } from "./sequra";
+export { fetchCreditAgreement, sendAnalyticsEvent } from "./sequra";

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { fetchCreditAgreement, logEvent } from "../api";
-import type { CreditInfo, EventProps } from "../types";
+import { fetchCreditAgreement } from "../api";
+import type { CreditInfo } from "../types";
 
 const useCreditAgreements = (price: number) => {
   const [selectedAgreement, setSelectedAgreement] = useState<CreditInfo | null>(
@@ -25,14 +25,6 @@ const useCreditAgreements = (price: number) => {
       } catch (e: unknown) {
         const message = e instanceof Error ? e.message : String(e);
         setError(message);
-
-        const event: EventProps = {
-          context: "splitPayWidget",
-          type: "fetchingError",
-          company: "companyID",
-        };
-
-        logEvent(event);
       }
     }
 
