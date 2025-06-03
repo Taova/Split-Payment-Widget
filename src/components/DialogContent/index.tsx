@@ -21,7 +21,10 @@ const DialogContent: React.FC<Props> = ({ fee }) => {
     <>
       <ul className="flex flex-col space-y-4">
         {topics.map(({ id, text, iconUrl }) => (
-          <li key={id} className="relative pl-4">
+          <li
+            key={id}
+            className="relative pl-4 font-normal not-italic no-underline cursor-default"
+          >
             <span className="absolute left-0 top-1/2 -translate-y-1/2">•</span>
 
             <span className="flex items-center justify-between w-full">
