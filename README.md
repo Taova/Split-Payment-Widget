@@ -27,6 +27,16 @@ npm install
 npm start
 ```
 
+To avoid CORS issues during local development, make sure to add the following in your `api/app.js`:
+
+```js
+app.use(
+  cors({
+    origin: "http://localhost:5173", // This is the host where your frontend app runs (Vite default)
+  }),
+);
+```
+
 The API server will be running at: http://localhost:8080
 
 ---
@@ -48,68 +58,31 @@ npm run build
 
 ---
 
-## 🛠 How to Integrate the Widget (for Merchants)
+## 📁 Project Structure
 
-To embed the SeQura installment widget into your website, follow these steps:
+```
+src/
+  components/
+  containers/
+  hooks/
+  api/
+  types/
+  utils/
+  main.tsx        # entry point for widget bundle
+  App.tsx         # widget root (with ref forwarding)
 
-### 1. Include the widget script and styles
+tests/
+  e2e/            # Playwright tests
 
-Add the following **inside the `<head>` tag** of your HTML page:
+index.html      # for manual testing
 
-```html
-<!-- TODO: Replace with actual CDN URL when available -->
-<link href="https://cdn.your-domain.com/sequra-widget/widget.css" rel="stylesheet" />
-<script src="https://cdn.your-domain.com/sequra-widget/widget.iife.js"></script>
+docs/           # Project documentation:
+                # - Setup and installation
+                # - Merchant integration guides
+                # - Usage examples
+                # - Tech stack and project structure
 ```
 
-> 🛑 NOTE: CDN is not live yet — you can host `dist/widget.css` and `dist/widget.iife.js` on your own server temporarily.
-
----
-
-### 2. Add the widget container
-
-Place an empty `<div>` where you want the widget to be rendered.
-This `id` must match the `containerId` you pass into the render call.
-
-```html
-<div id="widget"></div>
-```
-
----
-
-### 3. ✅ Render the widget after script is loaded
-
-Call `SeQuraWidget.render()` once the script is ready:
-
-```html
-<script>
-  window.addEventListener("load", function () {
-    if (
-      window.SeQuraWidget &&
-      typeof window.SeQuraWidget.render === "function"
-    ) {
-      window.SeQuraWidget.render({
-        containerId: "widget", // ID of your placeholder div
-        price: 29999, // total price in cents
-      });
-    } else {
-      console.warn("SeQuraWidget is not found");
-    }
-  });
-</script>
-```
-
----
-
-### 4. 🔁 Dynamically update the price
-
-You can update the widget by calling:
-
-```js
-window.SeQuraWidget.update(45000); // new total price in cents
-```
-
-> 💡 Look at the examples in `examples.md` file.
 ---
 
 ## 🔍 Manual Testing in `index.html`
@@ -168,23 +141,12 @@ SeQuraWidget.update(60000); // new price in cents
 
 ---
 
-## 📁 Project Structure
+## 📚 Documentation
 
-```
-src/
-  components/
-  containers/
-  hooks/
-  api/
-  types/
-  utils/
-  main.tsx        # entry point for widget bundle
-  App.tsx         # widget root (with ref forwarding)
+All documentation is located in the [`docs/`](./docs) folder.
 
-tests/
-  e2e/            # Playwright tests
-
-index.html      # for manual testing
-```
-
----
+| File                                                                      | Description                                                                                                                |
+| ------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| [`merchant-guide.md`](./docs/merchant-guide.md)                           | General guide for merchants on how to integrate the widget                                                                 |
+| [`merchant-usage-example.md`](./docs/merchant-usage-example.md)           | Code examples for widget integration (Vanilla JS, jQuery, React)                                                           |
+| [`tech-overview-and-decisions.md`](./docs/tech-overview-and-decisions.md) | Overview of the tech stack + explanation of technical choices, tradeoffs, assumptions made, and next steps for improvement |

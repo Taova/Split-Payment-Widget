@@ -1,4 +1,4 @@
-# 📦 Integration Examples: SeQuraWidget.render
+# 📦 Integration Examples: SeQuraWidget
 
 These examples show how to initialize the SeQura widget across different technology stacks.
 
@@ -14,8 +14,6 @@ Add the following to your `<head>`:
 />
 <script src="https://cdn.your-domain.com/sequra-widget/widget.iife.js"></script>
 ```
-
----
 
 ## ⚙️ `render()` Parameters
 
@@ -38,7 +36,7 @@ window.SeQuraWidget.update(45000); // 450.00€ in cents
 
 ## 🧱 Examples
 
-### 1. ✅ Vanilla JavaScript
+### 1. Vanilla JavaScript
 
 ```html
 <div id="widget"></div>
@@ -60,7 +58,7 @@ window.SeQuraWidget.update(45000); // 450.00€ in cents
 
 ---
 
-### 2. ✅ jQuery
+### 2. jQuery
 
 ```html
 <div id="widget"></div>
@@ -82,7 +80,7 @@ window.SeQuraWidget.update(45000); // 450.00€ in cents
 
 ---
 
-### 3. ✅ React (with useEffect)
+### 3. React (with useEffect)
 
 ```jsx
 import { useEffect } from "react";
